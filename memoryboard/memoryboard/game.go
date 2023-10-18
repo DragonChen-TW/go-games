@@ -20,14 +20,16 @@ type Game struct {
 }
 
 func NewGame() (*Game, error) {
-	g := &Game{}
+	g := &Game{
+		input: NewInput(),
+	}
 
 	var err error
-	g.board, err = NewBoard(boardNRow, boardNCol)
+	g.board, err = NewBoard(boardNRow, boardNCol, ScreenWidth, ScreenHeight)
 	if err != nil {
 		return nil, err
 	}
-	return g, err
+	return g, nil
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -35,7 +37,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func (g *Game) Update() error {
-	// g.input.Update()
+	g.input.Update()
 	if err := g.board.Update(g.input); err != nil {
 		return err
 	}

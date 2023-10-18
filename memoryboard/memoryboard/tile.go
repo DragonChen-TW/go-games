@@ -68,17 +68,6 @@ func NewTile(value, i, j int) *Tile {
 	}
 }
 
-// func tileAt(tiles map[*Tile]struct{}, x, y int) *Tile {
-// 	// for t := range tiles {
-
-// 	// 	if x >= t.data.x && x <= t.data.x+tileSize && y >= t.data.y && y <= t.data.y+tileSize {
-// 	// 		return t
-// 	// 	}
-// 	// }
-// 	// return nil
-// 	return nil
-// }
-
 func (t *Tile) Draw(boardImage *ebiten.Image) {
 	i, j := t.data.i, t.data.j
 	op := &ebiten.DrawImageOptions{}
