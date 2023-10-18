@@ -1,7 +1,6 @@
 package memoryboard
 
 import (
-	"fmt"
 	"image/color"
 	"math/rand"
 
@@ -24,21 +23,26 @@ func GenTiles(nrow, ncol int) [][]Tile {
 	})
 
 	var tiles [][]Tile = make([][]Tile, nrow)
+	var tileColors = make([]color.Color, (nrow*ncol)/2)
+	for i := range tileColors {
+		tileColors[i] = color.RGBA{
+			128 + uint8(rand.Intn(128)),
+			128 + uint8(rand.Intn(128)),
+			128 + uint8(rand.Intn(128)),
+			0xff,
+		}
+	}
 	for i := 0; i < nrow; i++ {
 		tiles[i] = make([]Tile, ncol)
 		for j := 0; j < ncol; j++ {
+			value := pairs[i*ncol+j]
 			tiles[i][j] = Tile{
 				data: TileData{
-					value: pairs[i*ncol+j],
+					value: value,
 					i:     i,
 					j:     j,
 				},
-				color: color.RGBA{
-					128 + uint8(rand.Intn(128)),
-					128 + uint8(rand.Intn(128)),
-					128 + uint8(rand.Intn(128)),
-					0xff,
-				},
+				color: tileColors[value],
 			}
 		}
 	}
@@ -52,7 +56,6 @@ func NewBoard(nrow, ncol int) (*Board, error) {
 	}
 
 	tiles := GenTiles(nrow, ncol)
-	fmt.Printf("%v\n", tiles)
 
 	b := &Board{
 		nrow:    nrow,
@@ -82,7 +85,10 @@ func (b *Board) Draw(boardImage *ebiten.Image) {
 			y := j*tileSize + (j+1)*tileMargin
 			op.GeoM.Translate(float64(x), float64(y))
 			boardImage.DrawImage(tileImage, op)
-			b.tiles[i][j].Draw(boardImage)
+
+			if b.guessed[i][j] {
+				b.tiles[i][j].Draw(boardImage)
+			}
 		}
 	}
 

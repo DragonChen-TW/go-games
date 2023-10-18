@@ -55,7 +55,7 @@ var (
 )
 
 func init() {
-	tileImage.Fill(color.RGBA{0xff, 0x88, 0x88, 0xff})
+	tileImage.Fill(color.RGBA{0xff, 0x55, 0x55, 0xff})
 }
 
 func NewTile(value, i, j int) *Tile {
